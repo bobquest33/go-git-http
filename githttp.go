@@ -32,10 +32,19 @@ func (g *GitHttp) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 // Shorthand constructor for most common scenario
-func New(root string) *GitHttp {
+func New(args ...string) *GitHttp {
+	root := "."
+	gitBinPath := "/usr/bin/git"
+	if len(args) > 0 {
+		root = args[0]
+	}
+	if len(args) > 1 {
+		gitBinPath = args[1]
+	}
+	
 	return &GitHttp{
 		ProjectRoot: root,
-		GitBinPath:  "/usr/bin/git",
+		GitBinPath:  gitBinPath,
 		UploadPack:  true,
 		ReceivePack: true,
 	}
